@@ -7,7 +7,7 @@ SHARED = -shared
 C = -c
 O = -o
 
-all: grpah
+all: graph
 
 graph: graph.o
 		$(CC) $(FLAGS) -o graph graph.o
