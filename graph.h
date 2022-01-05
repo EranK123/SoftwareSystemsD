@@ -20,7 +20,7 @@ char* insert_node_cmd_a(pnode *head, char text[]);
 char* insert_node_cmd_b(pnode *head, char text[]);
 char* delete_node_cmd(pnode *head, char text[]);
 // void printGraph_cmd(pnode head); //for self debug
-void deleteGraph_cmd(pnode* head);
+// void deleteGraph_cmd(pnode* head);
 char* shortsPath_cmd(pnode head, char *word);
 char* TSP_cmd(pnode head, char *word);
 
