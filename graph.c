@@ -38,7 +38,7 @@ char* TSP_cmd(pnode head, char *word);
     pnode *head = NULL;
     pnode *head_final = NULL;
 int main(){
-     int j=0;
+                    exit(1);
      for(int i=0; i<MAX; i++){
         scanf("%c", &word[i]);
         if (word[i] == 'A' || word[i] == 'B' || word[i] == 'D' || word[i] == 'S' || word[i] == 'T' || word[i] == 'Z'){
@@ -73,7 +73,6 @@ int main(){
             while((*index_src)=='A' || (*index_src)==' '){
                 index_src++;
             }
-            int num_of_nodes = key_word(index_src);
             
             while ((*index_src) != '\n' && (*index_src) != 'B' && *index_src != 'D' && *index_src != 'T' && *index_src != 'S')
             {
@@ -182,38 +181,6 @@ int main(){
             printf("\n");
     return 0;
 }
-// void deleteGraph_cmd(pnode *head){
-    
-//     pnode temp = *head;
-//     pnode prev = NULL;
-
-//     if(temp != NULL){
-//         while (temp)
-//         {
-//             prev = temp;
-//             delete_out_edges(prev);
-//             delete_in_edges(&prev, prev->node_num);
-//             temp = temp->next;
-//         }
-        
-//     }
-// }
-// void deleteGraph_cmd(pnode *head){
-//     printf("233");
-//       if(head){
-//         pnode *p = head;
-//         while (p)
-//         {
-//             printf("238");
-//             pnode *temp = p;
-//             pnode prev = *temp;
-//             p=&((*p)->next);
-//             delete_out_edges(*temp);
-//             delete_in_edges(temp, (*temp)->node_num);
-//             free(prev);
-//             }
-//         }
-//     }
 
 char* build_graph_cmd(pnode *head, char text[]){
  
@@ -233,11 +200,8 @@ char* delete_node_cmd(pnode *head, char text[]){
     pnode prev;
 
     if(p != NULL && p->node_num == del){
-        // printf("im the first\n");
         (*head) = p->next;
-        // printf("301");
         delete_out_edges(p);
-        // printf("302");
         //delete in edges
         delete_in_edges(head, del);
         free(p);
@@ -245,32 +209,15 @@ char* delete_node_cmd(pnode *head, char text[]){
     }
     while (p != NULL && p->node_num != del)
     {
-        // printf("310");
-        // printf("im not the first\n");
             prev = p;
             p = p->next;
     }
     if(p == NULL){
-        // printf("316");
-        // printf("not exsist\n");
         return ptr;
     }else{
     prev->next = p->next;
     delete_out_edges(p);
-    // printf("322");
     delete_in_edges(head, del);
-    // printf("***************\n");
-    // pnode temp = (*head);
-    // while(temp != NULL){
-    //     printf("id nodeD: %d\n", temp->node_num);
-    //     pedge edge = temp->edges;
-    //     while(edge != NULL){
-    //         printf("edge: %d, %d\n", edge->endpoint->node_num, edge->weight);
-    //         edge = edge->next;
-    //     } 
-    //     temp = temp->next;
-    // }
-    
     free(p);
     return ptr;
     }
@@ -290,7 +237,6 @@ void delete_in_edges(pnode* head, int del){
         if(e != NULL && (*e)->endpoint->node_num == del){
 
         (*e) = temp->next;
-        // printf("344");
         free(temp);
         start = start->next;
         count++;
@@ -328,7 +274,6 @@ void delete_out_edges(pnode head){
     }
     //delete out edges
     pedge *e = &(p->edges);
-    // pedge edge = *e;
     while (e && *e)
     {
         pedge temp = *e;
@@ -339,7 +284,6 @@ void delete_out_edges(pnode head){
 }
 
 pnode add_node(pnode *head, int id){
-    // pnode pn = new_node(NULL, id, NULL);
     pnode pn = (pnode)malloc(sizeof(node));
     pn->edges=NULL;
     pn->next=NULL;
@@ -359,12 +303,9 @@ pnode add_node(pnode *head, int id){
 }
 
 pnode add_node2(pnode** head, int id){
-    // printf("head* is: %p\n", *head);
     pnode pn = (pnode)malloc(sizeof(node));
     if(!pn){
-        // printf("no memory\n");
     }
-    // printf("head is: %p\n", head);
     pnode* n = *head;
     while ((*n) && (*n)->next != NULL)
     {
@@ -392,7 +333,6 @@ void build_node(char* index_src, pnode* head){
     int id_node = key_word(index_src);
     int ans = index_add(id_node,index_src);
     index_src+=ans;
-    // printf("%d\n",id_node);
     int id_node_dest;
     int w;
     pnode n = add_node(head,id_node);
@@ -400,18 +340,12 @@ void build_node(char* index_src, pnode* head){
         head = &n;
     }
     while((*index_src) != 'n'){
-        // printf("index: %c\n", *index_src);
         id_node_dest = key_word(index_src);
-        // printf("id: %d\n", id_node_dest);
         ans = index_add(id_node_dest,index_src);
         index_src+=ans;
-        // printf("ans: %d\n", ans);
         w = key_word(index_src);
         ans = index_add(w,index_src);
         index_src+=ans;
-        // printf("ans: %d\n", ans);
-        // printf("id dest: %d\n",id_node_dest);
-        // printf("w: %d\n",w);
         pnode dest = exists_in_graph(head,id_node_dest);
         if(dest == NULL){
             dest = add_node(head,id_node_dest);
@@ -423,16 +357,13 @@ void build_node(char* index_src, pnode* head){
             el = el->next;
         }
         el = e;
-        // printf("el: %d, %d\n", el->weight, el->endpoint->node_num);
     }
     pnode temp = (*head);
     while(temp != NULL){
-        // printf("id node: %d\n", temp->node_num);
         temp = temp->next;
     }
     pedge edge = n->edges;
     while(edge != NULL){
-        // printf("edge: %d, %d\n", edge->endpoint->node_num, edge->weight);
         edge = edge->next;
     }
 }
@@ -456,8 +387,6 @@ void add_edge2(pnode* head, int dest_num, int src_num, int w){
     edge->next=NULL;
     edge->endpoint = dest;
     edge->weight = w;
-    // printf("edge in add: %d,%d\n", edge->endpoint->node_num, edge->weight);
-    // return edge;
 }
 
 
@@ -466,25 +395,18 @@ char* insert_node_cmd_a(pnode *head1, char text[]){
     while((*index_src)=='A' || (*index_src)==' '){
         index_src++;
     }
-    int num_of_nodes = key_word(index_src);
-    // printf("%d\n",num_of_nodes);
-    // printf("index: %c\n", *index_src);
     pnode *head = head1;
     while ((*index_src) != '\n' && (*index_src) != 'B' && *index_src != 'D' && *index_src != 'T' && *index_src != 'S')
     {
-        // printf("index: %c\n", *index_src);
         if (*index_src == 'n')
         {
-            // build_node(index_src,head);
             while (*index_src == ' ' || *index_src == 'n')
             {
                 index_src++;
             }
-            // printf("index: %c\n", *index_src);
             int id_node = key_word(index_src);
             int ans = index_add(id_node,index_src);
             index_src+=ans;
-            // printf("%d\n",id_node);
             int id_node_dest;
             int w;
             pnode n_first;
@@ -495,7 +417,6 @@ char* insert_node_cmd_a(pnode *head1, char text[]){
                 *head = n_first;
                 n = n_first;
             }else{
-                // printf("head is ot null\n");
                 pnode head_temp = *head;
                 while (head_temp)
                 {
@@ -503,17 +424,12 @@ char* insert_node_cmd_a(pnode *head1, char text[]){
                 }
                 n = exists_in_graph(head,id_node);
                 if(n == NULL){
-                    // printf("n is null\n");
                     n = add_node(head,id_node);
                     head_temp = n;
                 }
             }
-            // printf("n node num: %d\n", n->node_num);
-            // printf("n node num: %d\n", n->node_num);
             while((*index_src) != 'n' && (*index_src) != '\n' && (*index_src) != 'B' && *index_src != 'D' && *index_src != 'T' && *index_src != 'S'){
-                // printf("index: %c\n", *index_src);
                 id_node_dest = key_word(index_src);
-                // printf("id: %d\n", id_node_dest);
                 ans = index_add(id_node_dest,index_src);
                 index_src+=ans;
                 w = key_word(index_src);
@@ -530,12 +446,9 @@ char* insert_node_cmd_a(pnode *head1, char text[]){
                     n->edges->weight = w;
                 }else{
                     pedge edge = n->edges;
-                    // printf("edge pointer: %p, %p\n", edge, n->edges);
-                    // printf("edge: %d node n: %d\n", edge->endpoint->node_num, n->node_num);
                     while(edge->next){
                         edge = edge->next;
                     }
-                    // printf("edge: %p node dest: %d\n", edge, dest->node_num);
                     edge->next = (pedge)(malloc(sizeof(edge)));
                     edge->next->next=NULL;
                     edge->next->endpoint = dest;
@@ -544,10 +457,8 @@ char* insert_node_cmd_a(pnode *head1, char text[]){
             }
             pnode temp = (*head);
             while(temp != NULL){
-                // printf("id node: %d\n", temp->node_num);
                 pedge edge = temp->edges;
                 while(edge != NULL){
-                    // printf("edge: %d, %d\n", edge->endpoint->node_num, edge->weight);
                     edge = edge->next;
                 } 
                 temp = temp->next;
@@ -557,8 +468,6 @@ char* insert_node_cmd_a(pnode *head1, char text[]){
         index_src++;
     }
     head_final = head;
-    // printf("head* is: %p\n", *head);
-    // printf("head is: %p\n", head);
     return index_src;
 }
 
@@ -567,23 +476,17 @@ char* insert_node_cmd_b(pnode *head1, char text[]){
     while((*index_src)=='B' || (*index_src)==' '){
         index_src++;
     }
-    // pnode *head = head_final;
-    // printf("head* is: %p\n", *head);
-    // printf("head is: %p\n", head);
     int id_node = key_word(index_src);
     int ans = index_add(id_node,index_src);
     index_src+=ans;
-    // printf("id: %d\n",id_node);
     int id_node_dest;
     int w;
     pnode n = *head;
-    // printf("head is: %p %p\n", head_final, *head_final);
     while (n && n->next != NULL && n->node_num != id_node)
     {
         n=n->next;
     }
     if(!(n->next) && n->node_num != id_node){
-        // printf("head is: %p\n", n);
         pnode pn = (pnode)malloc(sizeof(node));
         n->next = pn;
         n->next->edges=NULL;
@@ -595,7 +498,6 @@ char* insert_node_cmd_b(pnode *head1, char text[]){
         while (e && *e)
         {
             pedge temp = *e;
-            // printf("edge: %d node n: %d\n", temp->endpoint->node_num, n->node_num);
             e = &((*e)->next);
             free(temp);
         }
@@ -619,12 +521,9 @@ char* insert_node_cmd_b(pnode *head1, char text[]){
             n->edges->weight = w;
         }else{
             pedge edge = n->edges;
-            // printf("edge pointer: %p, %p\n", edge, n->edges);
-            // printf("edge: %d node n: %d\n", edge->endpoint->node_num, n->node_num);
             while(edge->next){
                 edge = edge->next;
             }
-            // printf("edge: %p node dest: %d\n", edge, dest->node_num);
             edge->next = (pedge)(malloc(sizeof(edge)));
             edge->next->next=NULL;
             edge->next->endpoint = dest;
@@ -633,149 +532,67 @@ char* insert_node_cmd_b(pnode *head1, char text[]){
     }
     pnode temp = (*head);
     while(temp != NULL){
-        // printf("id node: %d\n", temp->node_num);
         pedge edge = temp->edges;
         while(edge != NULL){
-            // printf("edge: %d, %d\n", edge->endpoint->node_num, edge->weight);
             edge = edge->next;
         } 
         temp = temp->next;
     }
-    // printf("head* is: %p\n", *head);
-    // printf("head is: %p\n", head);
     return index_src;
 }
 
 pnode exists_in_graphb(pnode *head, int id){
 
-    int key = id;
-    // printf("head* is: %p\n", *head);
-    // printf("head is: %p\n", head);
     pnode* temp = head;
     
-    // printf("id node in exist befor while: %d, %p, %p\n", id, head, *head);
     while ((*temp))
     {
         if((*temp)->node_num == id){
-            // printf("id node in exist: %d\n", (*head)->node_num);
-            // printf("head* is: %p\n", *head);
-    // printf("head is: %p\n", head);
             return (*temp);
         }else{
-            // printf("id node in exist: %d\n", (*head)->node_num);
             (*temp)=(*temp)->next;
         }
     }
-    // printf("head* is: %p\n", *head);
-    // printf("head is: %p\n", head);
     return NULL;
 }
 
 char* insert_node_cmd_b2(pnode *head1, char text[]){
     char *index_src = text;
-    // printf("index_src: %c\n", *index_src);
     while((*index_src)=='B' || (*index_src)==' '){
         index_src++;
     }
-    // printf("index: %c\n", *index_src);
     pnode *head = head1;
     while ((*index_src) != 0 && (*index_src) != '\n' && (*index_src) != 'A' && (*index_src) != 'B' && *index_src != 'D' && *index_src != 'T' && *index_src != 'S')
     {
-        // printf("index: %c\n", *index_src);
-      
-            // build_node(index_src,head);
-            // while (*index_src == ' ')
-            // {
-            //     index_src++;
-            // }
-            // printf("index: %c\n", *index_src);
             
             int id_node = key_word(index_src);
-            // printf("id_node %d", id_node);
             int ans = index_add(id_node,index_src);
-            // printf("index_src %c\n", (*index_src));
-            // printf("ans is: %d\n", ans);
             index_src+=ans;
-            // printf("index_src %c\n", (*index_src));
-            // printf("id_node: %d\n",id_node);
             int id_node_dest;
             int w;
-            pnode n_first;
             pnode n;
-            // pnode pn = NULL;
-            // if(head == NULL){//first node
-            //     printf("the head is null: %d\n", id_node_dest);
-            //     n_first = add_node(head,id_node);
-            //     head = &n_first;
-            //     *head = n_first;
-            //     n = n_first;
-            // }else{
-                // printf("head is ot null\n");
-                // n = exists_in_graphb(head,id_node);
-                // pnode* temp = head;
-    
-            // printf("id node in exist befor while: %d, %p, %p\n", id, head, *head);
-            // while ((*temp))
-            // {
-            //     if((*temp)->node_num == id){
-            //         // printf("id node in exist: %d\n", (*head)->node_num);
-            //         printf("head* is: %p\n", *head);
-            // printf("head is: %p\n", head);
-            //         n=(*temp);
-            //     }else{
-            //         // printf("id node in exist: %d\n", (*head)->node_num);
-            //         (*temp)=(*temp)->next;
-            //     }
-            // }
-                // if(n == NULL){
-                    // printf("n is null\n");
                     n = add_node2(&head,id_node);
-            // exit(0);
-                    // head = head1;
                 pnode head_temp = *head;
-            //     pnode temp = (*head);
-            // while(temp != NULL){
-            //     printf("id node: %d\n", temp->node_num);
-            //     pedge edge = temp->edges;
-            //     // printf("n node num: %p\n", temp->edges);
-            //     while(edge != NULL){
-            //         printf("edge: %d, %d\n", edge->endpoint->node_num, edge->weight);
-            //         edge = edge->next;
-            //     } 
-            //     temp = temp->next;
-            // }
                 while (head_temp->next)
                 {
                     head_temp = head_temp->next;
                 }
                     head_temp = n;
-                // }
-            // }
             
             while((*index_src) != 0 && (*index_src) != '\n' && (*index_src) != 'A' && (*index_src) != 'B' && *index_src != 'D' && *index_src != 'T' && *index_src != 'S'){
-                // printf("index!!!11: %c\n", *index_src);
-                // printf("index!!!11: %d\n", *index_src);
+
                 while (*index_src == ' ' || *index_src == 'n')
                 {
                     index_src++;
                 }
                 id_node_dest = key_word(index_src);
-                // printf("id_node_dest: %d\n", id_node_dest);
                 ans = index_add(id_node_dest,index_src);
-                // printf("index_src is!: %c\n", (*index_src));
                 index_src+=ans;
-                // printf("index_src is!!: %c\n", (*index_src));
-                // printf("ans!!!!!!!!!!!!!!!!!: %d\n", ans);
                 w = key_word(index_src);
                 ans = index_add(w,index_src);
                 index_src+=ans;
-                // printf("ans: %d\n", ans);
-                // printf("id dest: %d\n",id_node_dest);
-                // printf("w: %d\n",w);
                 pnode dest = exists_in_graph(head,id_node_dest);
-                // printf("dest pointer: %p, node id:%d\n", dest, id_node_dest);
                 if(dest == NULL){
-                    // printf("the dest is null! %p", dest);
                     dest = add_node(head,id_node_dest);
                 }
                 if(!n->edges){
@@ -785,38 +602,17 @@ char* insert_node_cmd_b2(pnode *head1, char text[]){
                     n->edges->weight = w;
                 }else{
                     pedge edge = n->edges;
-                    // printf("edge pointer: %p, %p\n", edge, n->edges);
-                    // printf("edge: %d node n: %d\n", edge->endpoint->node_num, n->node_num);
                     while(edge->next){
                         edge = edge->next;
                     }
-                    // printf("edge: %p node dest: %d\n", edge, dest->node_num);
                     edge->next = (pedge)(malloc(sizeof(edge)));
                     edge->next->next=NULL;
                     edge->next->endpoint = dest;
                     edge->next->weight = w;
                 }
             }
-            // pnode temp = (*head);
-            // while(temp != NULL){
-            //     printf("id node: %d\n", temp->node_num);
-            //     pedge edge = temp->edges;
-            //     // printf("n node num: %p\n", temp->edges);
-            //     while(edge != NULL){
-            //         printf("edge: %d, %d\n", edge->endpoint->node_num, edge->weight);
-            //         edge = edge->next;
-            //     } 
-            //     temp = temp->next;
-            // }
-            // index_src--;        
-        // printf("index___src: %d\n", (*index_src));
-        // head_final = head;
-        // index_src++;
     }
     head_final = head;
-    // printf("%p\n", head_final);
-    // printf("%d\n", (*head_final)->node_num);
-    // printf("%c", *index_src);
     return index_src;
 }
 pedge add_edge(pnode node, pnode dest, int w){
@@ -830,79 +626,22 @@ pedge add_edge(pnode node, pnode dest, int w){
     e->next=NULL;
     e->endpoint = dest;
     e->weight = w;
-    // printf("edge in add: %d,%d\n", edge->endpoint->node_num, edge->weight);
     return e;
 }
 pnode exists_in_graph(pnode *head, int id){
 
-    int key = id;
-    // printf("head* is: %p\n", *head);
-    // printf("head is: %p\n", head);
     pnode temp = *head;
     
-    // printf("id node in exist befor while: %d, %p, %p\n", id, head, *head);
     while (temp)
     {
         if(temp->node_num == id){
-            // printf("id node in exist: %d\n", (*head)->node_num);
             return temp;
         }else{
-            // printf("id node in exist: %d\n", (*head)->node_num);
             temp=temp->next;
         }
     }
     return NULL;
-    // int key = id;
-    // // pnode temp = *head;
-    // while ((*head))
-    // {
-    //     if((*head)->node_num == id){
-            // printf("id node in exist: %d\n", (*head)->node_num);
-    //         return (*head);
-    //     }else{
-            // printf("id node in exist: %d\n", (*head)->node_num);
-    //         (*head)=(*head)->next;
-    //     }
-    // }
-    // return NULL;
 }
-
-
-// pnode add_node(pnode *head, int id){
-//     // if(head == NULL){
-        // printf("297");
-//     //     head = (pnode*)malloc(sizeof(pnode*));
-//     //     // (*head) = (pnode)malloc(sizeof(node));
-//     //     // (*head)->node_num=id;
-//     //     // (*head)->edges=NULL;
-//     //     // (*head)->next=NULL;
-//     //     // pnode n = (pnode)malloc(sizeof(node));
-//     //     // (*head)->next = n;
-//     //     // return *head;
-//     // }else{
-        // printf("317");
-//         pnode n = (pnode)malloc(sizeof(node));
-//         pnode pn = NULL;
-//         if(!head){
-//             n->node_num=id;
-//             n->edges=NULL;
-//             n->next=NULL;
-//             // pn->next = n;
-//             head=&n;
-//         }else{
-//         pn = *head;
-//         n->node_num=id;
-//         n->edges=NULL;
-//         n->next=NULL;
-//         pn->next = n;
-//         while (pn->next)
-//         {
-//             pn=pn->next;
-//         }
-//     }
-    
-    // return n;
-// }
 
 pnode new_node(pnode next, int id, pedge edge){
     pnode n = (pnode)malloc(sizeof(node));
@@ -911,36 +650,9 @@ pnode new_node(pnode next, int id, pedge edge){
     n->node_num=id;
     return n;
 }
-// void printGraph_cmd(pnode head){
-
-//     pnode n = head;
-//     while (n)
-//     {
-//         pedge e = head->edges;
-//         while (e)
-//         {
-//             print_out_edges(e);
-//         } 
-//         n=n->next;
-//     }
-    
-// }
-// void print_out_edges(pedge edge){
-
-
-
-
-//     pedge e = edge;
-//     while (e)
-//     {
-//         printf("%d", e->weight);
-//         e = e->next;
-//     }
-// }
 
 char* shortsPath_cmd(pnode head, char *word){
 
-    pnode temp =head;
 
     char *index_src = word;
     while(*index_src == 'S' || *index_src == ' '){
@@ -952,7 +664,6 @@ char* shortsPath_cmd(pnode head, char *word){
     int dest = key_word(index_src);
     ans = index_add(dest,index_src);
     index_src+=ans;
-    // printf("src: %d, dest: %d", src, dest);
     int size = size_of_nodes(head);
     int **matrix = (int **)malloc(size * sizeof(int*));
     for(int i = 0; i < size; i++) matrix[i] = (int *)malloc(size * sizeof(int));
@@ -976,7 +687,6 @@ void to_matrix(pnode head, int **m){
     }
     
     pnode node = head;
-    pedge e = node->edges;
     for (int i = 0; i < count; i++)
     {
         for (int j = 0; j < count; j++)
@@ -993,7 +703,7 @@ void dijikstra(pnode head, int **graph, int n, int start_node, int end_node){
 
     start_node = pos(head, start_node);
     end_node = pos(head, end_node);
-    int cost[MAX][MAX], distance[MAX], pred[MAX];
+    int cost[MAX][MAX], distance[MAX];
     int visited[MAX], count, mindistance, nextnode, i,j;
     for(i=0;i < n;i++)
         for(j=0;j < n;j++)
@@ -1005,7 +715,6 @@ void dijikstra(pnode head, int **graph, int n, int start_node, int end_node){
     for(i=0;i< n;i++)
     {
         distance[i]=cost[start_node][i];
-        pred[i]=start_node;
         visited[i]=0;
     }
     distance[start_node]=0;
@@ -1020,19 +729,16 @@ void dijikstra(pnode head, int **graph, int n, int start_node, int end_node){
                 nextnode=i;
             }
         visited[nextnode]=1;
-        for(i=0;i < n;i++)
+        for(i=0;i < n;i++){
             if(!visited[i])
                 if(mindistance+cost[nextnode][i] < distance[i])
                 {
                     distance[i]=mindistance+cost[nextnode][i];
-                    pred[i]=nextnode;
                 }  
+        }
             count++;
     }
 
-    // for(int k=0;k < n; k++){
-    //     printf("\ndistance[%d] =  %d\n", k, distance[k]);
-    // }
     if(distance[end_node] == INFINITY){
         printf("Dijsktra shortest path: -1 ");
     }else{
@@ -1047,7 +753,6 @@ int key_word(char * word){
         word++;
     }
     char* str = word;
-    // printf();
     if(strlen(word) != 1){
     int i=1;
     while (word[i] != ' ')
@@ -1057,7 +762,6 @@ int key_word(char * word){
     }
     }
     int key = atoi(str);
-    // word = (word+i);
     return key;
 }
 int pos(pnode head, int node_id){
@@ -1113,7 +817,7 @@ int dijikstra_tsp(pnode head, int **graph, int n, int start_node, int end_node){
 
     start_node = pos(head, start_node);
     end_node = pos(head, end_node);
-    int cost[MAX][MAX], distance[MAX], pred[MAX];
+    int cost[MAX][MAX], distance[MAX];
     int visited[MAX], count, mindistance, nextnode, i,j;
     for(i=0;i < n;i++)
         for(j=0;j < n;j++)
@@ -1125,7 +829,6 @@ int dijikstra_tsp(pnode head, int **graph, int n, int start_node, int end_node){
     for(i=0;i< n;i++)
     {
         distance[i]=cost[start_node][i];
-        pred[i]=start_node;
         visited[i]=0;
     }
     distance[start_node]=0;
@@ -1140,13 +843,13 @@ int dijikstra_tsp(pnode head, int **graph, int n, int start_node, int end_node){
                 nextnode=i;
             }
         visited[nextnode]=1;
-        for(i=0;i < n;i++)
+        for(i=0;i < n;i++){
             if(!visited[i])
                 if(mindistance+cost[nextnode][i] < distance[i])
                 {
                     distance[i]=mindistance+cost[nextnode][i];
-                    pred[i]=nextnode;
                 }  
+        }
             count++;
     }
     return distance[end_node];
@@ -1155,7 +858,6 @@ int dijikstra_tsp(pnode head, int **graph, int n, int start_node, int end_node){
 
 int shortsPath_tsp(pnode head, int src, int dest){
 
-    pnode temp =head;
     int size = size_of_nodes(head);
     int **matrix = (int **)malloc(size * sizeof(int*));
     for(int i = 0; i < size; i++) matrix[i] = (int *)malloc(size * sizeof(int));
@@ -1181,11 +883,9 @@ int shortsPath_tsp(pnode head, int src, int dest){
     index += ans;
     int *arr = (int*)malloc(size*sizeof(int));
     int i=0;
-    int j=0, k=0, iter=0;
-    int distance=INFINITY;
+    int j=0;
     int num=0, min=INFINITY;
     int temp1=0, temp2=0, temp3=0, temp4=0, temp5=0;
-    int size_nodes = size_of_nodes(head);
     while(i<size){
         int key = key_word(index);
         arr[j++] = key;
@@ -1216,7 +916,6 @@ int shortsPath_tsp(pnode head, int src, int dest){
                         min = num;
                     }
             }
-                // if(size > 4){
                 for(int a=0; a<size; a++){
                     if(i != a && j != a && k != a){
                     num -= temp3;
@@ -1227,7 +926,6 @@ int shortsPath_tsp(pnode head, int src, int dest){
                             min = num;
                             }
                     }
-                    // if(size > 5){
                     for(int q=0; q<size; q++){
                         if(i != q && j != q && k != q && a != q){
                         num -= temp4;
@@ -1238,7 +936,6 @@ int shortsPath_tsp(pnode head, int src, int dest){
                                 min = num;
                                 }
                         }
-                        // if(size > 6){
                         for(int p=0; p<size; p++){
                             if(i != p && j != p && k != p && a != p && q != p){
                                 num -= temp5;
@@ -1252,14 +949,11 @@ int shortsPath_tsp(pnode head, int src, int dest){
                                 }
     }
                         }
-                        // }
                     }
                     
     }
-                    // }
     }
                 }
-                // }
             }
         }
         }
