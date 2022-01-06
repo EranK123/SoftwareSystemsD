@@ -38,7 +38,6 @@ char* TSP_cmd(pnode head, char *word);
     pnode *head = NULL;
     pnode *head_final = NULL;
 int main(){
-                    exit(1);
      for(int i=0; i<MAX; i++){
         scanf("%c", &word[i]);
         if (word[i] == 'A' || word[i] == 'B' || word[i] == 'D' || word[i] == 'S' || word[i] == 'T' || word[i] == 'Z'){
