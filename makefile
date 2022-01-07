@@ -1,13 +1,13 @@
 CC=gcc
 AR=ar
-FLAGS= -g -Wall
+FLAGS= -g -Wall -Werror
 LM = -lm
 RCS = -rcs
 SHARED = -shared
 C = -c
 O = -o
 
-all: graph
+all: clean graph
 
 graph: graph.o
 		$(CC) $(FLAGS) -o graph graph.o
