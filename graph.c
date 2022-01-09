@@ -195,7 +195,7 @@ int main(){
             head_final = NULL;
         }
         
-        printf("\n");
+        // printf("\n");
     return 0;
 }
 char* delete_node_cmd(pnode *head, char text[]){////////////
