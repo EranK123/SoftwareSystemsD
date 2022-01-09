@@ -50,7 +50,7 @@ int main(){
 
             if(head){
                 pnode *p = head;
-                while (*p)
+                while (*p && p)
                 {
                     pnode *temp = p;
                     pnode prev = *temp;
@@ -61,7 +61,7 @@ int main(){
                     free(prev);
                 }
                 head=NULL;
-                
+                head_final = NULL;
             }
         
             char *index_src = next;
@@ -121,9 +121,11 @@ int main(){
                         }
                         if(!n->edges){
                             n->edges = (pedge)(malloc(sizeof(edge)));
+                            if(n->edges != NULL){
                             n->edges->next = NULL;
                             n->edges->endpoint = dest;
                             n->edges->weight = w;
+                            }
                         }else{
                             pedge edge = n->edges;
                             while(edge->next){
@@ -131,6 +133,9 @@ int main(){
                             }
                             
                             edge->next = (pedge)malloc(sizeof(edge));
+                            if(edge->next == NULL){
+                                exit(1);
+                            }
                             // edge->next->next=NULL;
                             edge->next->endpoint = dest;
                             edge->next->weight = w;
@@ -187,8 +192,9 @@ int main(){
             free(prev);
             }
             head=NULL;
-            
+            head_final = NULL;
         }
+        
         printf("\n");
     return 0;
 }
@@ -236,7 +242,7 @@ void delete_in_edges(pnode* head, int del){////////////
     {
         int count=0;
         pedge *e = &(start->edges);
-        pedge prev;
+        pedge prev = NULL;
         pedge temp = *e;
         if(start->edges){
         if(e != NULL && (*e)->endpoint->node_num == del){
@@ -254,6 +260,7 @@ void delete_in_edges(pnode* head, int del){////////////
             start=start->next;
             count++;
         }else{
+            if(temp->next){
         prev->next = temp->next;
         free(temp);
         start = start->next;
@@ -262,6 +269,7 @@ void delete_in_edges(pnode* head, int del){////////////
         if(count == 0){
         start=start->next;
     }
+        }
         }
         }else{
         start=start->next;
@@ -290,9 +298,11 @@ void delete_out_edges(pnode head){////////////
 
 pnode add_node(pnode *head, int id){////////////
     pnode pn = (pnode)malloc(sizeof(node));
+    if(pn != NULL){
     pn->edges=NULL;
     pn->next=NULL;
     pn->node_num=id;
+    }
     if(head == NULL){
         head = &pn;
         *head = pn;
@@ -336,11 +346,13 @@ char* insert_node_cmd_b(pnode *head1, char text[]){////////////
     }
     if(!(n->next) && n->node_num != id_node){
         pnode pn = (pnode)malloc(sizeof(node));
+        if(pn != NULL){
         n->next = pn;
         n->next->edges=NULL;
         n->next->next=NULL;
         n->next->node_num=id_node;
         n=n->next;
+        }
     }else{
         pedge *e = &(n->edges);
         while (e && *e)
@@ -364,21 +376,22 @@ char* insert_node_cmd_b(pnode *head1, char text[]){////////////
         }
         if(!n->edges){
             n->edges = (pedge)(malloc(sizeof(edge)));
+            if(n->edges != NULL){
             n->edges->next = NULL;
             n->edges->endpoint = dest;
             n->edges->weight = w;
+            }
         }else{
             pedge edge = n->edges;
             while(edge->next){
                 edge = edge->next;
             }
             edge->next = (pedge)(malloc(sizeof(edge)));
-            // if(!edge->next){
-            //     edge->next =NULL;
-            // }
+            if(n->edges != NULL){
             edge->next->next=NULL;
             edge->next->endpoint = dest;
             edge->next->weight = w;
+        }
         }
     }
     pnode temp = (*head);
