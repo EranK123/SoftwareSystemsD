@@ -3,7 +3,6 @@
 #include <string.h>
 #include "graph.h"
 #define WORD 1024
-#define TXT 50
 #define MAX 1000
 #define INFINITY 10000
 
@@ -55,7 +54,6 @@ int main(){
                     pnode *temp = p;
                     pnode prev = *temp;
                     (*p) = (*p)->next;
-                    // p=&((*p)->next);
                     delete_out_edges(prev);
                     delete_in_edges(temp, prev->node_num);
                     free(prev);
@@ -136,7 +134,7 @@ int main(){
                             if(edge->next == NULL){
                                 exit(1);
                             }
-                            // edge->next->next=NULL;
+                            edge->next->next=NULL;
                             edge->next->endpoint = dest;
                             edge->next->weight = w;
                         }
@@ -186,7 +184,6 @@ int main(){
             pnode *temp = p;
             pnode prev = *temp;
             (*p) = (*p)->next;
-            // p=&((*p)->next);
             delete_out_edges(prev);
             delete_in_edges(temp, prev->node_num);
             free(prev);
@@ -195,7 +192,6 @@ int main(){
             head_final = NULL;
         }
         
-        // printf("\n");
     return 0;
 }
 char* delete_node_cmd(pnode *head, char text[]){////////////

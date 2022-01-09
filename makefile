@@ -9,8 +9,11 @@ O = -o
 
 all: graph
 
-graph: graph.o
-		$(CC) $(FLAGS) -o graph graph.o
+graph: libmygraph.a
+		$(CC) $(FLAGS) -o graph libmygraph.a
+
+libmygraph.a: graph.o
+	$(AR) $(RCS) libmygraph.a graph.o
 
 graph.o: graph.c graph.h
 		$(CC) $(FLAGS) -c graph.c
@@ -19,4 +22,4 @@ graph.o: graph.c graph.h
 .PHONY: clean all
 
 clean:
-	rm -f *.o graph
+	rm -f *.o *.a graph
